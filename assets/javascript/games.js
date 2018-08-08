@@ -1,7 +1,7 @@
 var plato = {
 
     words: ["philosophy","socrates","metaphysics","epistemology","moral","universals","plato","aristotle","aesthetics","knowledge","truth","wisdom"],
-    word: [],
+    word: "",
     used: [],
     shown: [],
     progress: ["Head", "Body", "Arms", "Right leg", "Left leg"],
@@ -9,11 +9,21 @@ var plato = {
     losses: 0,
     message: messages,
     chooseWord() {
-        this.word[0] = this.words[Math.floor(Math.random() * this.words.length - 1)];
-               
+        this.word = this.words[Math.floor(Math.random() * this.words.length - 1)].toString();
+           console.log(this.word);  
+           console.log(this.word.length); 
     },
     buildWordArea() {
-
+        for (i = 0; i < this.word.length; i++) {
+        var letter = document.createElement("li");
+        console.log(letter);
+        var node = document.createTextNode(this.word[i]);
+        letter.appendChild(node);
+        var element = document.getElementById("theWord");
+        element.appendChild(letter);
+        console.log(node);
+        console.log(this.word[i]);
+        };
     },
     acceptInput() {
         
@@ -47,6 +57,9 @@ var messages = {
         
     }
 }; //end messages object declaration
+
+plato.chooseWord();
+plato.buildWordArea();
  
 
 /* if (plato.feedback()) {
