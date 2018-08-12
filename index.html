@@ -6,45 +6,53 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Plato's Revenge</title>
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro" rel="stylesheet">
     
 </head>
 <body>
+    <header><h1>Plato's Revenge</h1></header>
     <div class="container" id="container">
-        <h1>Plato's Revenge</h1>
-        <div class="container" id="billboard-main">
-            <h5>After Socrates was unjustly executed by a rigged court, zealous follows took over Greece in order to exact revenge. The fascist mob rounded up anyone they thought might have done harm to Plato or his students and subjected them to "tests."</h5>
-            <h5>One of these tests is reproduced here so that you can experience for yourself the wrath of Philosophers gone mad with revenge!</h5>
-        </div>
-        <div class="container" id="scoreboard">
-            <h3>Your challenge is to spell out a Philosophical Vocabulary Word before your entire body hangs. If you succeed, you will have proven your worth. If you fail, you hang.</h3>
-            <div id="wins">
+        
+        <div class="quadrant" id="billboard-main">
+            <h2>After Socrates was unjustly executed by a rigged court, zealous follows took over Greece in order to exact revenge. The fascist mob rounded up anyone they thought might have done harm to Plato or his students and subjected them to "tests."</h5>
+            <h2>One of these tests is reproduced here so that you can experience for yourself the wrath of Philosophers gone mad with revenge!</h5>
+         </div> <!--end of #billboard-main-->
+        <div class="drop-down-billboard" id="alert">
 
+        </div>
+        <div  class="drop-down-billboard" id="scoreboard">
+            
+            <div id="wins">
+                <h1></h1>
             </div>
             <div id="losses">
-                
+                <h1></h1>
             </div>
         </div>
-        <div class="guessList" id="guessInputArea">
+
+        
+
+        <div class="quadrant" id="guessInputArea">Your Guesses:
                 
         </div>
-        <div class="gallows" id="progressArea">
+        <div class="quadrant" id="progressArea">Your Status:
 
         </div>
         
-        <div class="container" id="wordArea">
-            
-            
-            <div class="blank" id="dropTarget">Your Guess:
-                <h1></h1>
-            </div>
-            
-            <div id="wordList">
+        <div class="quadrant" id="wordArea">
+                <h2>Your challenge is to spell out a Philosophical Vocabulary Word before your entire body hangs. If you succeed, you will have proven your worth. If you fail, you hang.</h3>
+            <div id="wordList">The word:
                 <ul id="theWord" >
 
                 </ul>
 
             </div>
             
+        </div>
+
+        <div class="blank" id="dropTarget">Your Guess:
+                <h1></h1>
         </div>
                 
     </div>

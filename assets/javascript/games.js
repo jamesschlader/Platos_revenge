@@ -9,42 +9,58 @@ var plato = {
     losses: 0,
     guess: "",
     message: messages,
+
+    
     chooseWord() {
-        this.word = this.words[Math.ceil(Math.random() * this.words.length)].toString();
-           console.log(this.word);  
-           console.log(this.word.length); 
+        
+        plato.word = plato.words[Math.floor(Math.random() * plato.words.length)].toString();
+
+           console.log("plato.word " + plato.word);  
+           console.log("plato.guesses " + plato.guesses); 
+           console.log("plato.wins" + plato.wins); 
+           console.log("plato.losses" + plato.losses); 
+           console.log("plato.guess" + plato.guess); 
+           console.log("plato.guesses" + plato.guesses); 
+          // console.log(getElementById("theWord").getElementsByTagName("li").getElementsByTagName("p").length); 
+
+
     },
     buildWordArea() {
-        for (i = 0; i < this.word.length; i++) {
+        plato.removeParagraph("theWord");
+        for (i = 0; i < plato.word.length; i++) {
         var letterBox = document.createElement("li");
         letterBox.id = "letterBox" + i;
         letterBox.style.display = "inline-block";
         letterBox.style.borderBottom = "solid 3px black";
         letterBox.style.padding = "15px";
         letterBox.style.margin = "10px";
-        var ul = document.getElementById("theWord");
-        ul.appendChild(letterBox);
-        console.log(ul);
 
-        var element = document.getElementById("letterBox" + i);
-            console.log(element);
         var letter = document.createElement("p");
+       
         letter.style.fontSize = "1.4rem";
         letter.style.visibility = "hidden";
-        console.log(letter);
-        var node = document.createTextNode(this.word[i]);
+
+        var ul = document.getElementById("theWord");
+        var node = document.createTextNode(plato.word[i]);
+
         letter.appendChild(node);
-        
-        element.appendChild(letter);
+        letterBox.appendChild(letter);
+        ul.appendChild(letterBox);
+        console.log(ul);    
+        console.log(letterBox);
+        console.log(letter); 
         console.log(node);
-        console.log("from buildWordlArea: " + this.word[i]);
+        console.log("from buildWordlArea: " + plato.word[i]);
         };
     },
     getGuess() {
-        console.log("from getGuess: " + this.word);
+        console.log("from getGuess, this shows what this.word is: " + this.word);
         var target = this.word;
+       // console.log("this is the length of this.word: " + target.length)
+        console.log("from getGuess, this shows what target is after it has been set to equal this.word is: " + target);
+
         function check(letter) {
-            
+           
             console.log("from inside check: " + this.word);
             var r = document.getElementById("letter");
             if (r) {
@@ -57,34 +73,41 @@ var plato = {
             var z = document.createTextNode(letter.key.toUpperCase());
             y.appendChild(z);
             x.appendChild(y);  
-            
-            var test = letter.key;
-      
-        
-        
-            
-            console.log("from inside the forEach in getGuess " + letter);
-            if (target.match(/test/g)) {
-                console.log("what's the index of the found letter? "+ test.indexOf());
-                plato.showLetters(test.indexOf());
+            console.log("from getGuess, letter.key is " + letter.key);
+            console.log("from getGuess, letter is " + letter);           
+            if (target.includes(letter.key)) {
+                messages.billboard(messages.success);
+                plato.showLetters(letter.key);
             } else {
-                plato.usedLetters(test);
-                plato.showProgress(test);                
-            }
-        this.guesses++;
-        
-    };
+                plato.usedLetters(letter.key);
+                plato.showProgress(letter.key);  
+                plato.guesses++;
+                messages.billboard(messages.fail);
+            };  
+    }; //end check function
         document.addEventListener("keyup", check);
     },
 
-    showLetters(index){
-        var x = document.getElementById("letterBox" + index);
-        x.style.visibility = "show";
-        this.used.unshift(this.word[index]);
+    showLetters(letter){
+        console.log(letter);
+        var x = document.getElementById("theWord");
+        var y = x.getElementsByTagName("p");
+        console.log(y);
+        
+            for (i = 0; i < y.length; i++) {
+                if (y[i].innerHTML === letter) {y[i].style.visibility = "visible";}
+                console.log("from inside myFunction, here is the value of y[i].innerHTML: " + y[i].innerHTML);
+                console.log("from inside myFunction, here is the value of y[i]: " + y[i]);
+                console.log("from inside myFunction, here is the value of y[i].style.visibility: " + y[i].style.visibility);
+            }
+            plato.gameOver();
     },
     usedLetters(letter) {
         
-        this.used.unshift(letter);
+        if (plato.used.includes(letter.toUpperCase())) {
+            messages.billboard(messages.guessed);
+        } else {
+        this.used.unshift(letter.toUpperCase());
         var x = document.getElementById("guessInputArea");
         var letterBox = document.createElement("h1");
         letterBox.id = "letterBox" + this.used.indexOf(letter);
@@ -93,38 +116,115 @@ var plato = {
         letterBox.style.margin = "10px";
 
         console.log("from usedLetters " + letter);
-        var y = document.createTextNode(letter);
+        var y = document.createTextNode(letter.toUpperCase());
         
         letterBox.appendChild(y);
         x.appendChild(letterBox);
+        };
     },
     showProgress(letter) {
         x = document.getElementById("progressArea");
-        var announce = document.createElement("h3");
+        var announce = document.createElement("h1");
         var node = document.createTextNode(plato.progress[plato.guesses]);
         x.appendChild(announce);
         announce.appendChild(node);
-        this.used.unshift(letter);
+        plato.gameOver();
     },
+
+    removeParagraph(id) {
+    
+        var parentToClear = document.getElementById(id);      
+    
+        while (parentToClear.lastElementChild) {
+            var kid = parentToClear.lastElementChild;
+            parentToClear.removeChild(kid);
+        }
+    },
+    
+    
     gameOver() {
         var x = document.getElementById("theWord");
-        var y = x.getElementsByTagName("li");
-        var z = document.getElementById("showProgress");
-        var t = z.getElementsByTagName("h3");
-            var death = t.filter(part => part.innerText === "Left Leg");
-            var alive = y.filter(letter => letter.style.visibility === "show");
-            if (death.length > 0) {
-                    // you lose
-                    this.losses++;
-                    message.billboard(lose);
-                    message.feedback();
-            } else if (alive.length === word.length) {
-                    //you win
-                    this.wins++;
-                    this.message.billboard(win);
-                    message.feedback();
+        var y = x.getElementsByTagName("p");
+        var z = document.getElementById("progressArea");
+        var t = z.getElementsByTagName("h1");
+        // console.log("this is the value of the t variable in gameOver: " + t);
+        // console.log("this is the length of the y variable: " + y.length);
+        // console.log("this is the length of the z variable: " + z.length);
+        // console.log("this is the length of the x variable: " + x.length);
+        // console.log("this is the length of the t variable: " + t.length);
+        
+
+        //you win if all the <p>'s in theWord have style.visibility = plato.word.length.
+        //you lose if the number of <h3>'s in progressArea === 5.
+
+        //losing condition check:
+            if (z.childElementCount == 5) {
+                //you lose
+                plato.guesses = 0;
+                plato.losses++;
+                console.log(plato.losses);
+                messages.billboard(messages.lose);
+                
+                plato.restart();
+                plato.removeParagraph("guessInputArea");
+                plato.removeParagraph("theWord");
+                plato.removeParagraph("progressArea");
+                
+            } else if (z.childElementCount < 5) {
+
+        //winning condition check
+            var counter = 0;
+            console.log("y.length before for loop: " + y.length);
+            for (i = 0; i < y.length; i++) {
+                console.log("visibilty property of letters: " + y[i].style.visibility);
+                if (y[i].style.visibility === "visible") {counter++}
+                console.log("counter: " + counter);
+            };
+
+            if (counter == plato.word.length) {
+
+                console.log((plato.word.length));
+                console.log(counter === (plato.word.length));
+                //you win
+                plato.guesses = 0;
+                plato.wins++;
+                console.log(plato.wins);
+                messages.billboard(messages.win);
+                
+                plato.restart();                    
+                plato.removeParagraph("theWord");
+                plato.removeParagraph("progressArea");
+                plato.removeParagraph("guessInputArea");
             }
-    }          
+        }
+    },
+    
+    restart() {
+        plato.score();
+        plato.guesses = 0;
+        plato.chooseWord();
+        plato.buildWordArea();
+        plato.getGuess();
+    },
+
+    score() {
+        plato.removeParagraph("wins");
+        plato.removeParagraph("losses");
+
+        var x = document.getElementById("wins");
+        var y = document.getElementById("losses");
+        var text1 = document.createElement("h1");
+        var text2 = document.createElement("h1");
+        var node1 = document.createTextNode("Wins: " + plato.wins);
+        var node2 = document.createTextNode("Losses: " + plato.losses);
+        text1.appendChild(node1);
+        text2.appendChild(node2);
+        x.appendChild(text1);
+        y.appendChild(text2);
+        x.style.visibility = "visible";
+        y.style.visibility = "visible";
+        
+    }
         
 
 }; //end plato object declaration
@@ -135,14 +235,29 @@ var messages = {
     guessed: "That letter has already been guessed. Try another.",
     success: "You got one right! Keep going. You could save your neck yet!",
     fail: "Wrong! I bet you'll hang!",
-    win: "You solved the word before hanging. Looks like you're a friend of Plato after all...",
+    win: "You solved the word before hanging. Looks like you're a friend of Socrates after all...",
     lose: "Ha! I knew it! Hang for your sins against Wisdom!",
+    
     billboard(text) {
-        alert("text");
+        
+        plato.removeParagraph("alert");
+        var broadcast = document.getElementById("alert");
+        
+        var bill = document.getElementById("billboard-main");
+        bill.style.visibility = "hidden";
+        broadcast.style.visibility = "visible";
+        var announcement = document.createElement("h1");
+        var copy = document.createTextNode(text);
+        broadcast.appendChild(announcement);
+        announcement.appendChild(copy);
+        
+        
     },
+
     feedback() { //asks the player whether to play again or not. Returns true if yes, otherwise returns false.
     
         if (confirm("Do you want another game?")) {
+            plato.score();
             plato.guesses = 0;
             plato.chooseWord();
             plato.buildWordArea();
@@ -152,6 +267,7 @@ var messages = {
 }; //end messages object declaration
 
 messages.feedback();
+plato.score();
 
 /* if (plato.feedback()) {
 
